@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7f8fc">
+    <title>FlowSpace | Chat & Tasks</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-shell">
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <a href="#" class="brand" aria-label="FlowSpace home">
+                <span class="brand-icon"><i class="fa-solid fa-layer-group"></i></span>
+                <span>flow<span class="brand-accent">space</span></span>
+            </a>
+
+            <button class="workspace">
+                <span class="workspace-avatar">F</span>
+                <span class="workspace-info">
+                    <strong>My Workspace</strong>
+                    <small>Personal plan</small>
+                </span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+
+            <p class="nav-label">WORKSPACE</p>
+            <nav class="main-nav">
+                <button class="nav-item active" data-view="dashboard">
+                    <i class="fa-solid fa-house"></i> Overview
+                </button>
+                <button class="nav-item" data-view="tasks">
+                    <i class="fa-solid fa-list-check"></i> My Tasks
+                    <span class="nav-count" id="navTaskCount">0</span>
+                </button>
+                <button class="nav-item" data-view="chat">
+                    <i class="fa-regular fa-comments"></i> Team Chat
+                </button>
+            </nav>
+
+            <div class="sidebar-divider"></div>
+            <p class="nav-label">TASK FILTERS</p>
+            <nav class="main-nav">
+                <button class="nav-item filter-nav" data-filter="all">
+                    <span class="filter-dot all-dot"></span> All tasks
+                </button>
+                <button class="nav-item filter-nav" data-filter="active">
+                    <span class="filter-dot active-dot"></span> In progress
+                </button>
+                <button class="nav-item filter-nav" data-filter="completed">
+                    <span class="filter-dot completed-dot"></span> Completed
+                </button>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="upgrade-card">
+                    <div class="upgrade-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                    <strong>Stay in your flow</strong>
+                    <p>Small steps lead to big results. Keep going!</p>
+                    <div class="upgrade-progress"><span id="sidebarProgress"></span></div>
+                    <small id="sidebarProgressText">0% completed</small>
+                </div>
+
+                <button class="nav-item" id="themeToggle">
+                    <i class="fa-regular fa-moon" id="themeIcon"></i>
+                    <span id="themeLabel">Dark mode</span>
+                </button>
+
+                <div class="profile">
+                    <div class="profile-avatar">P</div>
+                    <div class="profile-info">
+                        <strong>My Profile</strong>
+                        <small>Free account</small>
+                    </div>
+                    <button class="icon-button" id="profileButton" title="Profile">
+                        <i class="fa-solid fa-ellipsis"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main area -->
+        <main class="main-area">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="icon-button mobile-menu" id="menuToggle" aria-label="Toggle sidebar">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="breadcrumb">Workspace <i class="fa-solid fa-chevron-right"></i>
+                        <strong id="breadcrumbTitle">Overview</strong>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <span class="today-label" id="todayLabel"></span>
+                    <button class="icon-button notification-button" id="notificationButton" title="Notifications">
+                        <i class="fa-regular fa-bell"></i><span></span>
+                    </button>
+                    <div class="top-avatar">P</div>
+                </div>
+            </header>
+
+            <div class="page-content">
+                <!-- Dashboard -->
+                <section class="view active-view" id="dashboardView">
+                    <div class="welcome-row">
+                        <div>
+                            <p class="eyebrow"><span class="live-dot"></span> YOUR PERSONAL WORKSPACE</p>
+                            <h1>Make today <span class="gradient-text">count.</span></h1>
+                            <p class="subtitle">Your tasks, conversations, and ideas—all in one place.</p>
+                        </div>
+                        <button class="primary-button" id="quickAddButton">
+                            <i class="fa-solid fa-plus"></i> New task
+                        </button>
+                    </div>
+
+                    <!-- Statistics -->
+                    <div class="stats-grid">
+                        <article class="stat-card">
+                            <div class="stat-top">
+                                <span>Total tasks</span>
+                                <span class="stat-icon purple"><i class="fa-solid fa-list-check"></i></span>
+                            </div>
+                            <h2 id="totalStat">0</h2>
+                            <p>Tasks in your workspace</p>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-top">
+                                <span>In progress</span>
+                                <span class="stat-icon orange"><i class="fa-solid fa-hourglass-half"></i></span>
+                            </div>
+                            <h2 id="activeStat">0</h2>
+                            <p>Keep the momentum going</p>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-top">
+                                <span>Completed</span>
+                                <span class="stat-icon green"><i class="fa-solid fa-check-double"></i></span>
+                            </div>
+                            <h2 id="completedStat">0</h2>
+                            <p>Look how far you've come</p>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-top">
+                                <span>Completion</span>
+                                <span class="stat-icon blue"><i class="fa-solid fa-chart-pie"></i></span>
+                            </div>
+                            <h2 id="completionStat">0%</h2>
+                            <div class="mini-progress"><span id="completionBar"></span></div>
+                        </article>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <!-- Tasks -->
+                        <section class="panel tasks-panel">
+                            <div class="panel-heading">
+                                <div>
+                                    <h2>My tasks <span class="heading-count" id="headingTaskCount">0</span></h2>
+                                    <p>Turn your plans into progress.</p>
+                                </div>
+                                <button class="text-button" id="viewAllTasks">View all <i
+                                        class="fa-solid fa-arrow-right"></i></button>
+                            </div>
+
+                            <form class="quick-task-form" id="quickTaskForm">
+                                <i class="fa-solid fa-plus"></i>
+                                <input id="quickTaskInput" type="text" placeholder="Add a task and press Enter..."
+                                    maxlength="180" autocomplete="off">
+                                <button type="submit" title="Add task"><i class="fa-solid fa-arrow-right"></i></button>
+                            </form>
+
+                            <div class="task-toolbar">
+                                <div class="filter-tabs">
+                                    <button class="filter-tab active" data-filter="all">All</button>
+                                    <button class="filter-tab" data-filter="active">Active</button>
+                                    <button class="filter-tab" data-filter="completed">Done</button>
+                                </div>
+                                <button class="icon-button small-icon" id="taskSearchToggle" title="Search tasks">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                            </div>
+
+                            <div class="search-box hidden" id="taskSearchBox">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input id="taskSearchInput" type="search" placeholder="Search your tasks...">
+                                <button class="icon-button small-icon" id="closeTaskSearch" type="button"><i
+                                        class="fa-solid fa-xmark"></i></button>
+                            </div>
+
+                            <div class="task-list" id="dashboardTaskList"></div>
+                            <div class="empty-state" id="dashboardEmpty">
+                                <div class="empty-icon"><i class="fa-solid fa-clipboard-check"></i></div>
+                                <strong>Nothing on your list yet</strong>
+                                <p>Add a task above and start making progress.</p>
+                            </div>
+                            <div class="panel-footer">
+                                <span id="taskFooterText">Ready when you are.</span>
+                                <button class="text-button danger-text hidden" id="clearCompleted">Clear
+                                    completed</button>
+                            </div>
+                        </section>
+
+                        <!-- Chat -->
+                        <section class="panel chat-panel">
+                            <div class="panel-heading">
+                                <div class="chat-heading">
+                                    <div class="chat-heading-icon"><i class="fa-solid fa-comments"></i></div>
+                                    <div>
+                                        <h2>Quick chat</h2>
+                                        <p><span class="online-dot"></span> Your personal space</p>
+                                    </div>
+                                </div>
+                                <button class="icon-button small-icon" id="clearChatButton" title="Clear conversation">
+                                    <i class="fa-solid fa-ellipsis"></i>
+                                </button>
+                            </div>
+
+                            <div class="chat-messages" id="dashboardChatMessages" aria-live="polite"></div>
+                            <div class="chat-suggestions">
+                                <button class="suggestion-chip" data-message="Help me plan my day">Plan my day</button>
+                                <button class="suggestion-chip" data-message="Show my progress">My progress</button>
+                            </div>
+                            <form class="chat-form" id="dashboardChatForm">
+                                <input type="text" id="dashboardChatInput" placeholder="Write a message..."
+                                    maxlength="500" autocomplete="off" required>
+                                <button type="submit" aria-label="Send message"><i
+                                        class="fa-solid fa-paper-plane"></i></button>
+                            </form>
+                            <p class="chat-footnote"><i class="fa-solid fa-bolt"></i> A little progress every day adds
+                                up.</p>
+                        </section>
+                    </div>
+
+                    <footer class="app-footer">
+                        <span>Made for better focus <i class="fa-solid fa-heart"></i></span>
+                        <span>FlowSpace &copy; <span class="current-year"></span></span>
+                    </footer>
+                </section>
+
+                <!-- Full tasks view -->
+                <section class="view" id="tasksView">
+                    <div class="welcome-row">
+                        <div>
+                            <p class="eyebrow">YOUR PRODUCTIVITY HUB</p>
+                            <h1>Task <span class="gradient-text">manager.</span></h1>
+                            <p class="subtitle">Organize your priorities, one task at a time.</p>
+                        </div>
+                        <button class="primary-button" id="focusAddButton"><i class="fa-solid fa-plus"></i> Add
+                            task</button>
+                    </div>
+
+                    <div class="panel full-tasks-panel">
+                        <div class="panel-heading">
+                            <div>
+                                <h2>All tasks</h2>
+                                <p>Everything you need to get done.</p>
+                            </div>
+                            <button class="text-button danger-text" id="clearCompletedFull">Clear completed</button>
+                        </div>
+
+                        <form class="task-create-form" id="fullTaskForm">
+                            <input type="text" id="fullTaskInput" placeholder="What do you need to do?" maxlength="180"
+                                required>
+                            <select id="taskPriority" aria-label="Task priority">
+                                <option value="medium">Medium priority</option>
+                                <option value="high">High priority</option>
+                                <option value="low">Low priority</option>
+                            </select>
+                            <button class="primary-button" type="submit"><i class="fa-solid fa-plus"></i> Add
+                                task</button>
+                        </form>
+
+                        <div class="full-task-toolbar">
+                            <div class="filter-tabs">
+                                <button class="filter-tab active" data-filter="all">All tasks</button>
+                                <button class="filter-tab" data-filter="active">In progress</button>
+                                <button class="filter-tab" data-filter="completed">Completed</button>
+                            </div>
+                            <span class="muted" id="fullTaskCount">0 tasks</span>
+                        </div>
+
+                        <div class="full-task-list" id="fullTaskList"></div>
+                        <div class="empty-state" id="fullTasksEmpty">
+                            <div class="empty-icon"><i class="fa-solid fa-list-check"></i></div>
+                            <strong>You're all caught up!</strong>
+                            <p>Create a task to get started.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Full chat view -->
+                <section class="view" id="chatView">
+                    <div class="welcome-row">
+                        <div>
+                            <p class="eyebrow">MESSAGES & IDEAS</p>
+                            <h1>Your <span class="gradient-text">conversation.</span></h1>
+                            <p class="subtitle">Write down your thoughts and keep your ideas in one place.</p>
+                        </div>
+                        <button class="secondary-button" id="newChatButton"><i class="fa-solid fa-rotate-left"></i>
+                            Reset chat</button>
+                    </div>
+
+                    <div class="panel full-chat-panel">
+                        <div class="full-chat-header">
+                            <div class="chat-heading-icon"><i class="fa-solid fa-comments"></i></div>
+                            <div>
+                                <h2>FlowSpace Chat</h2>
+                                <p><span class="online-dot"></span> Demo assistant · Replies run locally</p>
+                            </div>
+                            <span class="demo-badge">LOCAL DEMO</span>
+                        </div>
+                        <div class="full-chat-messages" id="fullChatMessages" aria-live="polite"></div>
+                        <div class="full-chat-bottom">
+                            <div class="chat-suggestions">
+                                <button class="suggestion-chip" data-message="Help me plan my day">Plan my day</button>
+                                <button class="suggestion-chip" data-message="Show my progress">My progress</button>
+                                <button class="suggestion-chip" data-message="Give me a productivity tip">Productivity
+                                    tip</button>
+                            </div>
+                            <form class="chat-form full-chat-form" id="fullChatForm">
+                                <input type="text" id="fullChatInput" placeholder="Type your message here..."
+                                    maxlength="500" autocomplete="off" required>
+                                <button type="submit" aria-label="Send message"><i
+                                        class="fa-solid fa-paper-plane"></i></button>
+                            </form>
+                            <p class="chat-footnote">Messages are saved in this browser. No AI API is connected.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Task editing modal -->
+    <div class="modal-backdrop hidden" id="taskModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal">
+            <div class="modal-heading">
+                <h2 id="modalTitle">Edit task</h2>
+                <button class="icon-button" id="closeTaskModal" type="button" aria-label="Close"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="editTaskForm">
+                <label for="editTaskTitle">Task title</label>
+                <input id="editTaskTitle" type="text" maxlength="180" required>
+                <label for="editTaskPriority">Priority</label>
+                <select id="editTaskPriority">
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+                <div class="modal-actions">
+                    <button type="button" class="secondary-button" id="cancelTaskEdit">Cancel</button>
+                    <button type="submit" class="primary-button">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
